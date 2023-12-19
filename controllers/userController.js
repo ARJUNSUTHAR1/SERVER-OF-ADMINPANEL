@@ -19,13 +19,13 @@ exports.registerUser = async (req,res)=>{
     await newUser.save();
 
     res.send({
-        sucess : true,
+        success : true,
         message : "user registered sucessfully"
     })
     
     } catch (error) {
         res.send({
-            sucess : false,
+            success : false,
             message : error.message,
             
             
