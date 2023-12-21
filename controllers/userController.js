@@ -51,7 +51,7 @@ exports.login = async (req,res)=>{
         else{
             throw new Error("user not found");
         }
-        const token = jwt.sign({userId :user._id,email : user.email},`${process.env.SECRET}`,{expiresIn : "24h"});
+        const token = jwt.sign({userId :user._id,email : user.email},`${process.env.SECRET}`,{expiresIn : "0h"});
 
         res.status(200).json({
             message : "login sucessfully",
