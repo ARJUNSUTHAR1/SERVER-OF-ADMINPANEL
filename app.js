@@ -6,6 +6,13 @@ const userRoute = require('./routes/userRoute')
 app.use(express.json());
 app.use(cors());
 
-app.use("/api",userRoute)
+
+// imports route
+const product = require("./controllers/product");
+const categories = require("./controllers/categories");
+
+app.use("/api", userRoute)
+app.use("/api/product", product);
+app.use("/api/categories", categories);
 
 module.exports = app;

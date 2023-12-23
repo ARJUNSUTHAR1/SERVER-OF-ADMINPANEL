@@ -27,8 +27,6 @@ exports.registerUser = async (req, res) => {
         res.send({
             success: false,
             message: error.message,
-
-
         }
         )
     }
@@ -55,13 +53,13 @@ exports.login = async (req, res) => {
         res.status(200).json({
             message: "login sucessfully",
             user,
-            ok:true,
+            success: true,
             token
         })
-        
+
     } catch (error) {
-        res.send({
-            success:false,
+        res.status(400).json({
+            success: false,
             error: error.message
         })
     }
