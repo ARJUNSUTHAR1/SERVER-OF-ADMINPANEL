@@ -1,12 +1,12 @@
 const express = require("express");
 const router = express.Router();
-const Category = require("../models/Category");
+const Attribute = require("../models/Attributes");
 const User = require('../models/Usermodel.js')
 
 
-// create category
+// create attribute
 router.post(
-    "/create-category", async (req, res, next) => {
+    "/create-attribute", async (req, res, next) => {
         try {
             const shopId = req.body.shopId;
             const shop = await User.findById(shopId);
@@ -18,11 +18,11 @@ router.post(
                 })
             }
             else {
-                // All the variables for categorys now we can customize
+                // All the variables for attributes now we can customize
                 const { name } = req.body;
 
-                // create category
-                const categoryDoc = await Category.create(
+                // create attribute
+                const attributeDoc = await Attribute.create(
                     {
                         name
                     }
@@ -30,7 +30,7 @@ router.post(
 
                 res.status(201).json({
                     success: true,
-                    categoryDoc,
+                    attributeDoc,
                 });
             }
         } catch (error) {
@@ -41,15 +41,15 @@ router.post(
         }
     })
 
-// get all categorys of a shop
+// get all attributes of a shop
 router.get(
-    "/get-all-categorys/:id",
+    "/get-all-attributes/:id",
     catchAsyncErrors(async (req, res, next) => {
         try {
-            const categorys = await Category.find({ shopId: req.params.id });
+            const attributes = await Attribute.find({ shopId: req.params.id });
             res.status(201).json({
                 success: true,
-                categorys,
+                attributes,
             });
         } catch (error) {
             return res.status(400).json({
@@ -60,25 +60,25 @@ router.get(
     })
 );
 
-// delete category of a shop
+// delete attribute of a shop
 router.delete(
-    "/delete-category/:id",
+    "/delete-attribute/:id",
     catchAsyncErrors(async (req, res, next) => {
         try {
-            const category = await Category.findById(req.params.id);
+            const attribute = await Attribute.findById(req.params.id);
 
-            if (!category) {
+            if (!attribute) {
                 return (res.status(400).json({
                     success: false,
-                    error: "category is not found with this id"
+                    error: "attribute is not found with this id"
                 }))
             }
 
-            await category.remove();
+            await attribute.remove();
 
             res.status(201).json({
                 success: true,
-                message: "category Deleted successfully!",
+                message: "attribute Deleted successfully!",
             });
         } catch (error) {
             return res.status(400).json({
@@ -91,29 +91,29 @@ router.delete(
 
 
 
-// update for a category
+// update for a attribute
 router.post(
-    "/update-category", async (req, res, next) => {
+    "/update-attribute", async (req, res, next) => {
         try {
 
-            const categoryId = req.body.categoryId;
+            const attributeId = req.body.attributeId;
 
-            const category = await Category.findById(categoryId);
+            const attribute = await Attribute.findById(attributeId);
 
-            if (!category) {
+            if (!attribute) {
                 return res.status(400).json({
                     success: false,
-                    error: "category Id is invalid!"
+                    error: "attribute Id is invalid!"
                 });
             }
             else {
-                // All the variables for categorys now we can customize
+                // All the variables for attributes now we can customize
                 const { name } = req.body;
 
 
-                // upadte category
-                const upadatecategoryDoc = await Category.findByIdAndUpdate(
-                    categoryId,
+                // upadte attribute
+                const upadateattributeDoc = await Attribute.findByIdAndUpdate(
+                    attributeId,
                     {
                         name
                     }
@@ -121,7 +121,7 @@ router.post(
 
                 res.status(201).json({
                     success: true,
-                    upadatecategoryDoc,
+                    upadateattributeDoc,
                 });
             }
         } catch (error) {
