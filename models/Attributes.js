@@ -1,4 +1,7 @@
-import mongoose, { model, models, Schema } from "mongoose";
+// In Attributes.js
+import mongoose from "mongoose";
+
+const { model, models, Schema } = mongoose;
 
 const Attributes = new Schema({
     name: { type: String, required: true },
@@ -10,4 +13,6 @@ const Attributes = new Schema({
     timestamps: true,
 });
 
-export const Attribute = models?.Attribute || model('Attribute', Attributes);
+const Attribute = models?.Attribute || model('Attribute', Attributes);
+
+export default Attribute; // Change this line to use default export

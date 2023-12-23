@@ -1,8 +1,10 @@
-const express = require("express");
-const router = express.Router();
-const Attribute = require("../models/Attributes");
-const User = require('../models/Usermodel.js')
+import express from 'express';
+import Attribute from "../models/Attributes.js";
+import User from "../models/Usermodel.js";
 
+
+
+const router = express.Router();
 
 // create attribute
 router.post(
@@ -44,7 +46,7 @@ router.post(
 // get all attributes of a shop
 router.get(
     "/get-all-attributes/:id",
-    catchAsyncErrors(async (req, res, next) => {
+    async (req, res, next) => {
         try {
             const attributes = await Attribute.find({ shopId: req.params.id });
             res.status(201).json({
@@ -58,12 +60,11 @@ router.get(
             });
         }
     })
-);
 
 // delete attribute of a shop
 router.delete(
     "/delete-attribute/:id",
-    catchAsyncErrors(async (req, res, next) => {
+    async (req, res, next) => {
         try {
             const attribute = await Attribute.findById(req.params.id);
 
@@ -87,7 +88,7 @@ router.delete(
             });
         }
     })
-);
+
 
 
 
@@ -133,4 +134,4 @@ router.post(
     })
 
 
-module.exports = router;
+export default router;

@@ -1,20 +1,19 @@
-const express = require("express");
-const app = express();
-const cors = require('cors')
+// app.js
+import express from 'express';
+import cors from 'cors';
+import userRoute from './routes/userRoute.js';
+import product from './controllers/product.js';
+import categories from './controllers/categories.js';
+import attributesRoute from './controllers/attributesRoute.js'; // use import for ESM
 
-const userRoute = require('./routes/userRoute')
+const app = express();
+
 app.use(express.json());
 app.use(cors());
 
+app.use('/api', userRoute);
+app.use('/api/product', product);
+app.use('/api/category', categories);
+app.use('/api/attribute', attributesRoute);
 
-// imports route
-const product = require("./controllers/product");
-const categories = require("./controllers/categories");
-const attributes = require("./controllers/attributes");
-
-app.use("/api", userRoute)
-app.use("/api/product", product);
-app.use("/api/category", categories);
-app.use("/api/attribute", attributes);
-
-module.exports = app;
+export default app;

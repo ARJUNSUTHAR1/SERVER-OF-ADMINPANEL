@@ -1,9 +1,9 @@
-const express = require("express");
+import express from "express";
+import Category from "../models/Category.js"
+import User from "../models/Usermodel.js";
+
+
 const router = express.Router();
-const Category = require("../models/Category");
-const User = require('../models/Usermodel.js')
-
-
 // create category
 router.post(
     "/create-category", async (req, res, next) => {
@@ -44,7 +44,7 @@ router.post(
 // get all categorys of a shop
 router.get(
     "/get-all-categorys/:id",
-    catchAsyncErrors(async (req, res, next) => {
+    async (req, res, next) => {
         try {
             const categorys = await Category.find({ shopId: req.params.id });
             res.status(201).json({
@@ -58,12 +58,11 @@ router.get(
             });
         }
     })
-);
 
 // delete category of a shop
 router.delete(
     "/delete-category/:id",
-    catchAsyncErrors(async (req, res, next) => {
+    async (req, res, next) => {
         try {
             const category = await Category.findById(req.params.id);
 
@@ -87,7 +86,6 @@ router.delete(
             });
         }
     })
-);
 
 
 
@@ -133,4 +131,5 @@ router.post(
     })
 
 
-module.exports = router;
+
+export default router;

@@ -1,9 +1,9 @@
-const express = require("express");
+import Product from "../models/product.js";
+import express from 'express';
+import User from "../models/Usermodel.js";
+
+
 const router = express.Router();
-const Product = require("../models/product");
-const User = require('../models/Usermodel.js')
-
-
 
 // create product
 router.post(
@@ -45,7 +45,7 @@ router.post(
 // get all products of a shop
 router.get(
     "/get-all-products-shop/:id",
-    catchAsyncErrors(async (req, res, next) => {
+    async (req, res, next) => {
         try {
             const products = await Product.find({ shopId: req.params.id });
             res.status(201).json({
@@ -59,12 +59,11 @@ router.get(
             });
         }
     })
-);
 
 // delete product of a shop
 router.delete(
     "/delete-shop-product/:id",
-    catchAsyncErrors(async (req, res, next) => {
+    async (req, res, next) => {
         try {
             const product = await Product.findById(req.params.id);
 
@@ -91,7 +90,6 @@ router.delete(
             });
         }
     })
-);
 
 
 
@@ -101,7 +99,7 @@ router.post(
         try {
 
             const productId = req.body.productId;
-            
+
             const product = await Product.findById(productId);
 
             if (!product) {
@@ -137,5 +135,4 @@ router.post(
         }
     })
 
-
-module.exports = router;
+export default router;
