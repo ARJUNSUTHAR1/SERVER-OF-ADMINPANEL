@@ -27,8 +27,6 @@ exports.registerUser = async (req, res) => {
         res.send({
             success: false,
             message: error.message,
-
-
         }
         )
     }
@@ -50,19 +48,35 @@ exports.login = async (req, res) => {
         else {
             throw new Error("user not found");
         }
-        const token = jwt.sign({ userId: user._id, email: user.email }, `${process.env.SECRET}`, { expiresIn: "0h" });
+        const token = jwt.sign({ userId: user._id, email: user.email }, `${process.env.SECRET}`, { expiresIn: "2h" });
 
         res.status(200).json({
+            success: true,
             message: "login sucessfully",
             user,
-            ok:true,
             token
         })
-        
+
     } catch (error) {
         res.send({
-            success:false,
+            success: false,
             error: error.message
+        })
+    }
+}
+
+exports.getCurrentUser = async(req,res)=>{
+    try {
+        const user = await User.findById(req.body.userId);
+        res.send({
+            success : true,
+            message : "User Fetched Successfully",
+            data : user,
+        })
+    } catch (error) {
+        res.send({
+            success: false,
+            message: error.message,
         })
     }
 }
