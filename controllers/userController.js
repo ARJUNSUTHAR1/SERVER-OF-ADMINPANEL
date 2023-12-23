@@ -65,13 +65,13 @@ export const login = async (req, res) => {
     }
 }
 
-exports.getCurrentUser = async(req,res)=>{
+export const getCurrentUser = async (req, res) => {
     try {
         const user = await User.findById(req.body.userId);
         res.send({
-            success : true,
-            message : "User Fetched Successfully",
-            data : user,
+            success: true,
+            message: "User Fetched Successfully",
+            data: user,
         })
     } catch (error) {
         res.send({
