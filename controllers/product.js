@@ -1,6 +1,8 @@
 import Product from "../models/product.js";
 import express from 'express';
 import User from "../models/Usermodel.js";
+import upload from "../middlewares/multer.js";
+import cloudinary from "../configs/cloudinaryConfig.js";
 
 
 const router = express.Router();
@@ -9,35 +11,17 @@ const router = express.Router();
 router.post(
     "/create-product", async (req, res, next) => {
         try {
-            const shopId = req.body.shopId;
-            const shop = await User.findById(shopId);
+            const newProduct = await Product.create(req.body);
 
-            if (!shop) {
+            res.status(200).send({
+                success: true,
+                message: "Product has been added successfully",
+            })
 
-                return next(new ErrorHandler("Shop Admin Id is invalid!", 400));
-            }
-            else {
-                // All the variables for products now we can customize
-                const { name, description, originalPrice, discountPrice, stock, images, attributes, shopId, sold_out, category, tags, properties } = req.body;
-
-
-                // create Product
-                const productDoc = await Product.create(
-                    {
-                        name, description, originalPrice, discountPrice, stock,
-                        images, attributes, shopId, sold_out, category, tags, properties
-                    }
-                )
-
-                res.status(201).json({
-                    success: true,
-                    productDoc,
-                });
-            }
         } catch (error) {
             return res.status(404).json({
                 success: false,
-                error: error.message
+                error: error.message,   
             });
         }
     })
@@ -90,6 +74,27 @@ router.delete(
             });
         }
     })
+
+
+router.post('/upload', upload.single('product_images'), function (req, res) {
+    cloudinary.uploader.upload(req.file.path, {
+        folder: "cms-images",
+    }, function (err, result) {
+        if (err) {
+            console.log(err);
+            return res.status(500).json({
+                success: false,
+                message: "Error"
+            })
+        }
+
+        res.status(200).json({
+            success: true,
+            message: "Your Image Uploaded Successfully!",
+            url: result.secure_url
+        })
+    })
+});
 
 
 
