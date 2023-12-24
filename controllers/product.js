@@ -5,8 +5,8 @@ import upload from "../middlewares/multer.js";
 import cloudinary from "../configs/cloudinaryConfig.js";
 
 
-const router = express.Router();
 
+const router = express.Router();
 // create product
 router.post(
     "/create-product", async (req, res, next) => {
@@ -28,7 +28,7 @@ router.post(
 
 // get all products of a shop
 router.get(
-    "/get-all-products-shop/:id",
+    "/get-all-products",
     async (req, res, next) => {
         try {
             const products = await Product.find({ shopId: req.params.id });

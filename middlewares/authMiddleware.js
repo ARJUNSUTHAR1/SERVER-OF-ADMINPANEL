@@ -12,10 +12,8 @@ const authMiddleware = (req, res, next) => {
     }
 
     const token = authorizationHeader.split(" ")[1];
-    console.log("Received Token:", token);
 
     const decryptedToken = jwt.verify(token, process.env.SECRET);
-    console.log("Decrypted Token:", decryptedToken);
 
     req.body.userId = decryptedToken.userId;
     next();
