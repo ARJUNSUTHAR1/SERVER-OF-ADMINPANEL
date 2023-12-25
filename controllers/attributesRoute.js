@@ -1,40 +1,27 @@
-import express from 'express';
-import Attribute from "../models/Attributes.js";
+import express from "express";
+import Attribute from "../models/Attributes.js"
 import User from "../models/Usermodel.js";
-
+import mongoose from "mongoose";
 
 
 const router = express.Router();
-
 // create attribute
 router.post(
     "/create-attribute", async (req, res, next) => {
         try {
-            const shopId = req.body.shopId;
-            const shop = await User.findById(shopId);
+            // All the variables for attributes now we can customize
+            // create attribute
+            const { name } = req.body;
 
-            if (!shop) {
-                return res.status(404).json({
-                    success: false,
-                    error: "Shop Admin Id is invalid!"
-                })
-            }
-            else {
-                // All the variables for attributes now we can customize
-                const { name } = req.body;
+            const attributeDoc = await Attribute.create({
+                name
+            })
 
-                // create attribute
-                const attributeDoc = await Attribute.create(
-                    {
-                        name
-                    }
-                )
-
-                res.status(201).json({
-                    success: true,
-                    attributeDoc,
-                });
-            }
+            res.status(201).json({
+                message: "Create Successfully",
+                success: true,
+                attributeDoc,
+            });
         } catch (error) {
             return res.status(404).json({
                 success: false,
@@ -45,13 +32,13 @@ router.post(
 
 // get all attributes of a shop
 router.get(
-    "/get-all-attributes/:id",
+    "/get-all-attribute",
     async (req, res, next) => {
         try {
-            const attributes = await Attribute.find({ shopId: req.params.id });
+            const attribute = await Attribute.find({});
             res.status(201).json({
                 success: true,
-                attributes,
+                attribute
             });
         } catch (error) {
             return res.status(400).json({
@@ -62,76 +49,68 @@ router.get(
     })
 
 // delete attribute of a shop
-router.delete(
-    "/delete-attribute/:id",
-    async (req, res, next) => {
-        try {
-            const attribute = await Attribute.findById(req.params.id);
+router.delete("/delete-attribute/:id", async (req, res, next) => {
+    try {
+        const attributeId = req.params.id;
 
-            if (!attribute) {
-                return (res.status(400).json({
-                    success: false,
-                    error: "attribute is not found with this id"
-                }))
-            }
+        const attribute = await Attribute.findByIdAndDelete(attributeId);
 
-            await attribute.remove();
-
-            res.status(201).json({
-                success: true,
-                message: "attribute Deleted successfully!",
-            });
-        } catch (error) {
+        if (!attribute) {
             return res.status(400).json({
                 success: false,
-                error: error.message
+                error: "attribute is not found with this id",
             });
         }
-    })
 
+        res.status(201).json({
+            success: true,
+            message: "attribute deleted successfully!",
+            attribute,
+        });
+    } catch (error) {
+        return res.status(400).json({
+            success: false,
+            error: error.message,
+        });
+    }
+});
 
-
-
-// update for a attribute
-router.post(
-    "/update-attribute", async (req, res, next) => {
+// Update attribute of a shop
+router.put(
+    "/update-attribute/:id",
+    async (req, res, next) => {
         try {
+            const attributeId = req.params.id;
 
-            const attributeId = req.body.attributeId;
+            const { name } = req.body;
 
             const attribute = await Attribute.findById(attributeId);
 
             if (!attribute) {
                 return res.status(400).json({
                     success: false,
-                    error: "attribute Id is invalid!"
+                    error: "attribute is not found with this id",
                 });
             }
-            else {
-                // All the variables for attributes now we can customize
-                const { name } = req.body;
 
+            // Update attribute
+            attribute.name = name;
+            await attribute.save();
 
-                // upadte attribute
-                const upadateattributeDoc = await Attribute.findByIdAndUpdate(
-                    attributeId,
-                    {
-                        name
-                    }
-                );
-
-                res.status(201).json({
-                    success: true,
-                    upadateattributeDoc,
-                });
-            }
+            res.status(200).json({
+                success: true,
+                message: "attribute updated successfully!",
+                attribute,
+            });
         } catch (error) {
-            return res.status(404).json({
+            return res.status(400).json({
                 success: false,
-                error: error.message
+                error: error.message,
             });
         }
-    })
+    }
+);
+
 
 
 export default router;
