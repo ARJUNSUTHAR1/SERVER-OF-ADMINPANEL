@@ -21,7 +21,7 @@ router.post(
         } catch (error) {
             return res.status(404).json({
                 success: false,
-                error: error.message,   
+                error: error.message,
             });
         }
     })
@@ -31,7 +31,7 @@ router.get(
     "/get-all-products",
     async (req, res, next) => {
         try {
-            const products = await Product.find({ shopId: req.params.id });
+            const products = await Product.find().sort({ createdAt: -1 });
             res.status(201).json({
                 success: true,
                 products,
@@ -44,28 +44,35 @@ router.get(
         }
     })
 
-// delete product of a shop
-router.delete(
-    "/delete-shop-product/:id",
+// get all products of a shop
+router.get(
+    "/get-product-by-id/:id",
     async (req, res, next) => {
         try {
-            const product = await Product.findById(req.params.id);
+            const unitProducts = await Product.findById(req.params.id);
+            res.status(201).json({
+                success: true,
+                data: unitProducts,
+            });
+        } catch (error) {
+            return res.status(400).json({
+                success: false,
+                error: error.message
+            });
+        }
+    })
 
-            if (!product) {
-                return next(new ErrorHandler("Product is not found with this id", 404));
-            }
+// delete product of a shop
+router.delete(
+    "/delete-product/:id",
+    async (req, res, next) => {
+        try {
 
-            for (let i = 0; 1 < product.images.length; i++) {
-                const result = await cloudinary.v2.uploader.destroy(
-                    product.images[i].public_id
-                );
-            }
-
-            await product.remove();
+            const product = await Product.findByIdAndDelete(req.params.id);
 
             res.status(201).json({
                 success: true,
-                message: "Product Deleted successfully!",
+                message: product.productName + " product deleted successfully!",
             });
         } catch (error) {
             return res.status(400).json({
@@ -99,11 +106,11 @@ router.post('/upload', upload.single('product_images'), function (req, res) {
 
 
 // update for a product
-router.post(
-    "/update-product", async (req, res, next) => {
+router.put(
+    "/update-product/:id", async (req, res, next) => {
         try {
 
-            const productId = req.body.productId;
+            const productId = req.params.id;
 
             const product = await Product.findById(productId);
 
@@ -115,21 +122,15 @@ router.post(
             }
             else {
                 // All the variables for products now we can customize
-                const { name, description, originalPrice, discountPrice, stock, images, attributes, shopId, sold_out, category, tags, properties } = req.body;
+                // const { name, description, originalPrice, discountPrice, stock, images, attributes, shopId, sold_out, category, tags, properties } = req.body;
 
 
                 // upadte Product
-                const upadateProductDoc = await Product.findByIdAndUpdate(
-                    productId,
-                    {
-                        name, description, originalPrice, discountPrice, stock,
-                        images, attributes, shopId, sold_out, category, tags, properties
-                    }
-                );
+                const upadateProductDoc = await Product.findByIdAndUpdate(productId,req.body);
 
                 res.status(201).json({
                     success: true,
-                    upadateProductDoc,
+                    message : product.productName + "has been edited successfully"
                 });
             }
         } catch (error) {
