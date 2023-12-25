@@ -1,6 +1,7 @@
 import express from "express";
 import Category from "../models/Category.js"
 import User from "../models/Usermodel.js";
+import mongoose from "mongoose";
 
 
 const router = express.Router();
@@ -17,7 +18,7 @@ router.post(
             })
 
             res.status(201).json({
-                message:"Create Successfully",
+                message: "Create Successfully",
                 success: true,
                 categoryDoc,
             });
@@ -48,75 +49,67 @@ router.get(
     })
 
 // delete category of a shop
-router.delete(
-    "/delete-category/:id",
-    async (req, res, next) => {
-        try {
-            const category = await Category.findById(req.params.id);
+router.delete("/delete-category/:id", async (req, res, next) => {
+    try {
+        const categoryId = req.params.id;
 
-            if (!category) {
-                return (res.status(400).json({
-                    success: false,
-                    error: "category is not found with this id"
-                }))
-            }
+        const category = await Category.findByIdAndDelete(categoryId);
 
-            await category.remove();
-
-            res.status(201).json({
-                success: true,
-                message: "category Deleted successfully!",
-            });
-        } catch (error) {
+        if (!category) {
             return res.status(400).json({
                 success: false,
-                error: error.message
+                error: "Category is not found with this id",
             });
         }
-    })
 
+        res.status(201).json({
+            success: true,
+            message: "Category deleted successfully!",
+            category,
+        });
+    } catch (error) {
+        return res.status(400).json({
+            success: false,
+            error: error.message,
+        });
+    }
+});
 
-
-// update for a category
-router.post(
-    "/update-category", async (req, res, next) => {
+// Update category of a shop
+router.put(
+    "/update-category/:id",
+    async (req, res, next) => {
         try {
-
-            const categoryId = req.body.categoryId;
+            const categoryId = req.params.id;
+            
+            const { name } = req.body;
 
             const category = await Category.findById(categoryId);
 
             if (!category) {
                 return res.status(400).json({
                     success: false,
-                    error: "category Id is invalid!"
+                    error: "Category is not found with this id",
                 });
             }
-            else {
-                // All the variables for categorys now we can customize
-                const { name } = req.body;
 
+            // Update category
+            category.name = name;
+            await category.save();
 
-                // upadte category
-                const upadatecategoryDoc = await Category.findByIdAndUpdate(
-                    categoryId,
-                    {
-                        name
-                    }
-                );
-
-                res.status(201).json({
-                    success: true,
-                    upadatecategoryDoc,
-                });
-            }
+            res.status(200).json({
+                success: true,
+                message: "Category updated successfully!",
+                category,
+            });
         } catch (error) {
-            return res.status(404).json({
+            return res.status(400).json({
                 success: false,
-                error: error.message
+                error: error.message,
             });
         }
-    })
+    }
+);
 
 
 
