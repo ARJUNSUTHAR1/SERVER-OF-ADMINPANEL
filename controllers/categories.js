@@ -8,31 +8,19 @@ const router = express.Router();
 router.post(
     "/create-category", async (req, res, next) => {
         try {
-            const shopId = req.body.shopId;
-            const shop = await User.findById(shopId);
+            // All the variables for categorys now we can customize
+            // create category
+            const { name } = req.body;
 
-            if (!shop) {
-                return res.status(404).json({
-                    success: false,
-                    error: "Shop Admin Id is invalid!"
-                })
-            }
-            else {
-                // All the variables for categorys now we can customize
-                const { name } = req.body;
+            const categoryDoc = await Category.create({
+                name
+            })
 
-                // create category
-                const categoryDoc = await Category.create(
-                    {
-                        name
-                    }
-                )
-
-                res.status(201).json({
-                    success: true,
-                    categoryDoc,
-                });
-            }
+            res.status(201).json({
+                message:"Create Successfully",
+                success: true,
+                categoryDoc,
+            });
         } catch (error) {
             return res.status(404).json({
                 success: false,
@@ -43,13 +31,13 @@ router.post(
 
 // get all categorys of a shop
 router.get(
-    "/get-all-categorys/:id",
+    "/get-all-category",
     async (req, res, next) => {
         try {
-            const categorys = await Category.find({ shopId: req.params.id });
+            const category = await Category.find({});
             res.status(201).json({
                 success: true,
-                categorys,
+                category
             });
         } catch (error) {
             return res.status(400).json({
