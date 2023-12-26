@@ -3,8 +3,13 @@ import mongoose from "mongoose";
 
 const { model, models, Schema } = mongoose;
 
+const AttributeOptionSchema = new Schema({
+    value: { type: String, required: true },
+});
+
 const Attributes = new Schema({
     name: { type: String, required: true },
+    options: [AttributeOptionSchema], // Array of options
     createdAt: {
         type: Date,
         default: Date.now(),
