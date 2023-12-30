@@ -16,7 +16,7 @@ router.post(
             res.status(200).send({
                 success: true,
                 message: "Product has been added successfully",
-            })
+            });
 
         } catch (error) {
             return res.status(404).json({
@@ -25,6 +25,7 @@ router.post(
             });
         }
     })
+
 
 // get all products of a shop
 router.get(
@@ -109,9 +110,7 @@ router.post('/upload', upload.single('product_images'), function (req, res) {
 router.put(
     "/update-product/:id", async (req, res, next) => {
         try {
-
             const productId = req.params.id;
-
             const product = await Product.findById(productId);
 
             if (!product) {
@@ -119,18 +118,13 @@ router.put(
                     success: false,
                     error: "Product Id is invalid!"
                 });
-            }
-            else {
-                // All the variables for products now we can customize
-                // const { name, description, originalPrice, discountPrice, stock, images, attributes, shopId, sold_out, category, tags, properties } = req.body;
-
-
-                // upadte Product
-                const upadateProductDoc = await Product.findByIdAndUpdate(productId,req.body);
+            } else {
+                // Update the product
+                const updateProductDoc = await Product.findByIdAndUpdate(productId, req.body);
 
                 res.status(201).json({
                     success: true,
-                    message : product.productName + "has been edited successfully"
+                    message: `${product.productName} has been edited successfully`
                 });
             }
         } catch (error) {
@@ -139,6 +133,7 @@ router.put(
                 error: error.message
             });
         }
-    })
+    });
+
 
 export default router;
