@@ -11,28 +11,30 @@ const ProductSchema = new Schema({
         type: String,
         required: true,
     },
-
-    shortDescription : {
+    shortDescription: {
         type: String,
         required: true,
     },
-
     regularPrice: {
         type: Number,
         required: true
     },
-
     salePrice: {
         type: Number,
         required: true
     },
-
-    images: [
+    product_images: [
         {
             type: String
         }
     ],
-
+    attributes: [
+        {
+            type: { type: String },
+            value: { type: String },
+            stock: { type: Number }
+        }
+    ]
 }, {
     timestamps: true,
 });
