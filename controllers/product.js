@@ -11,17 +11,20 @@ const router = express.Router();
 router.post(
     "/create-product", async (req, res, next) => {
         try {
+            console.log(req.body,"back")
             const newProduct = await Product.create(req.body);
-
+            console.log(newProduct,"back")
             res.status(200).send({
                 success: true,
                 message: "Product has been added successfully",
+                newProduct
             });
 
         } catch (error) {
             return res.status(404).json({
                 success: false,
                 error: error.message,
+                
             });
         }
     })
