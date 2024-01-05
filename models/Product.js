@@ -3,59 +3,63 @@ import mongoose from "mongoose";
 const { model, models, Schema } = mongoose;
 
 const ProductSchema = new Schema({
-    productName: {
-        type: String,
-        required: true,
+  productName: {
+    type: String,
+    required: true,
+  },
+  mainDescription: {
+    type: String,
+    required: true,
+  },
+  shortDescription: {
+    type: String,
+    required: true,
+  },
+  regularPrice: {
+    type: Number,
+    required: true,
+  },
+  salePrice: {
+    type: Number,
+    required: true,
+  },
+  product_images: [
+    {
+      type: String,
     },
-    mainDescription: {
-        type: String,
-        required: true,
+  ],
+  tags: [
+    {
+      type: String,
     },
-    shortDescription: {
+  ],
+  attributes: [
+    {
+      name: {
         type: String,
-        required: true,
-    },
-    regularPrice: {
+      },
+      values: [
+        {
+          type: String,
+        },
+      ],
+      stock: {
         type: Number,
-        required: true
+      },
     },
-    salePrice: {
-        type: Number,
-        required: true
+  ],
+  producthighlights: [
+    {
+      highlight: {
+        type: String,
+      },
+      value: {
+        type: String,
+      },
     },
-    product_images: [
-        {
-            type: String
-        }
-    ],
-    tags: [
-        {
-            type: String
-        }
-    ],
-    attributes: [
-        {
-            values: [
-                {
-                    type: String,
-                },
-            ],
-            stock: { type: Number }
-        }
-    ],
-    producthighlights: [
-        {
-            highlight:
-            {
-                type: String,
-            },
-            value: {
-                type: String
-            }
-        }
-    ]
+  ],
 }, {
-    timestamps: true,
+  timestamps: true,
 });
 
 const Product = models.Product || model('Product', ProductSchema);

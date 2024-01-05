@@ -11,7 +11,6 @@ const router = express.Router();
 router.post(
     "/create-product", async (req, res, next) => {
         try {
-            console.log(req.body,"back")
             const newProduct = await Product.create(req.body);
             console.log(newProduct,"back")
             res.status(200).send({
