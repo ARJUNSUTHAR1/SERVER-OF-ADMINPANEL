@@ -10,12 +10,9 @@ router.post(
     "/create-category", async (req, res, next) => {
         try {
             // All the variables for categorys now we can customize
-            // create category
-            const { name } = req.body;
 
-            const categoryDoc = await Category.create({
-                name
-            })
+
+            const categoryDoc = await Category.create(req.body)
 
             res.status(201).json({
                 message: "Create Successfully",
