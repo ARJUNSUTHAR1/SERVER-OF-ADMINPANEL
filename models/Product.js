@@ -34,19 +34,21 @@ const ProductSchema = new Schema({
     },
   ],
   attributes: [
-    {
-      name: {
-        type: String,
-      },
-      values: [
-        {
+    [
+      {
+        name: {
           type: String,
         },
-      ],
-      stock: {
-        type: Number,
+        values: [
+          {
+            type: String,
+          },
+        ],
+        stock: {
+          type: String, // or Number, depending on your requirements
+        },
       },
-    },
+    ],
   ],
   producthighlights: [
     {
