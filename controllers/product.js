@@ -1,6 +1,5 @@
-import Product from "../models/product.js";
+import Product from "../models/Product.js";
 import express from 'express';
-import User from "../models/Usermodel.js";
 import upload from "../middlewares/multer.js";
 import cloudinary from "../configs/cloudinaryConfig.js";
 
