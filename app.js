@@ -7,6 +7,7 @@ import categories from './controllers/categories.js';
 import tags from './controllers/tags.js';
 import highlights from './controllers/highlights.js';
 import attributesRoute from './controllers/attributesRoute.js'; // use import for ESM
+import parentCategory from './controllers/parentCategory.js'; // use import for ESM
 
 const app = express();
 
@@ -19,5 +20,6 @@ app.use('/api/category', categories);
 app.use('/api/attribute', attributesRoute);
 app.use('/api/tag', tags);
 app.use('/api/highlight', highlights);
+app.use('/api/parentCategory', parentCategory);
 
 export default app;

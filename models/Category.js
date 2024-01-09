@@ -4,11 +4,13 @@ const { model, models, Schema } = mongoose;
 
 const CategorySchema = new Schema({
 
-  name: {
-    type: String,
-    required: true,
-    unique: true,
+
+  parentCategory : {
+    type : Schema.Types.ObjectId,
+    ref : "ParentCategory",
+    default : null,
   },
+
   subcategories: [
     {
       name: {
