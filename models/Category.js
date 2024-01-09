@@ -28,5 +28,5 @@ const CategorySchema = new Schema({
   timestamps: true,
 });
 
-const Category = models?.Category || model('Category', CategorySchema);
+const Category = models?.Category || model('TotalCategory', CategorySchema);
 export default Category;
