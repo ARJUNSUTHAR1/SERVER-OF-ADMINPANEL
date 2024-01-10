@@ -78,21 +78,18 @@ router.put(
     async (req, res, next) => {
         try {
             const categoryId = req.params.id;
-            
-            const { name } = req.body;
 
-            const category = await Category.findById(categoryId);
+            // const category = await Category.findById(categoryId);
 
-            if (!category) {
-                return res.status(400).json({
-                    success: false,
-                    error: "Category is not found with this id",
-                });
-            }
+            // if (!category) {
+            //     return res.status(400).json({
+            //         success: false,
+            //         error: "Category is not found with this id",
+            //     });
+            // }
 
             // Update category
-            category.name = name;
-            await category.save();
+            const category = await Category.findByIdAndUpdate(categoryId , req.body);
 
             res.status(200).json({
                 success: true,
