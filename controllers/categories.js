@@ -32,7 +32,7 @@ router.get(
     "/get-all-category",
     async (req, res, next) => {
         try {
-            const category = await Category.find({});
+            const category = await Category.find({}).populate('parentCategory');
             res.status(201).json({
                 success: true,
                 category
@@ -79,17 +79,14 @@ router.put(
         try {
             const categoryId = req.params.id;
 
-            // const category = await Category.findById(categoryId);
+            const category = await Category.findByIdAndUpdate(categoryId, req.body, { new: true });
 
-            // if (!category) {
-            //     return res.status(400).json({
-            //         success: false,
-            //         error: "Category is not found with this id",
-            //     });
-            // }
-
-            // Update category
-            const category = await Category.findByIdAndUpdate(categoryId , req.body);
+            if (!category) {
+                return res.status(404).json({
+                    success: false,
+                    error: "Category not found",
+                });
+            }
 
             res.status(200).json({
                 success: true,
@@ -97,13 +94,14 @@ router.put(
                 category,
             });
         } catch (error) {
-            return res.status(400).json({
+            return res.status(500).json({
                 success: false,
-                error: error.message,
+                error: "Internal Server Error",
             });
         }
     }
 );
+
 
 
 
