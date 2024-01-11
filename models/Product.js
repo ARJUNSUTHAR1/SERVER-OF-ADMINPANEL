@@ -31,7 +31,7 @@ const ProductSchema = new Schema({
     required: true,
   },
 
-  
+
   regularPrice: {
     type: Number,
     required: true,
@@ -42,7 +42,8 @@ const ProductSchema = new Schema({
   },
   product_images: [
     {
-      type: String,
+      color: { type: String, },
+      src: { type: String, }
     },
   ],
   tags: [
