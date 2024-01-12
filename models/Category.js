@@ -4,27 +4,32 @@ const { model, models, Schema } = mongoose;
 
 const CategorySchema = new Schema({
 
-
-  parentCategory : {
-    type : Schema.Types.ObjectId,
-    ref : "ParentCategory",
-    default : null,
+  name: {
+    type: String,
+    required: true,
+  },
+  description: {
+    type: String,
+    required: true,
+  },
+  parentCategory: {
+    type: Schema.Types.ObjectId,
+    ref: "TotalCategory",
+    default: null,
+  },
+  isVisible: {
+    type: Boolean,
+    default: true,
+  },
+  mainImage: {
+    type: String,
+    required: true,
+  },
+  hoverImage: {
+    type: String,
+    required: true,
   },
 
-  subcategories: [
-    {
-      name: {
-        type: String,
-        required: true,
-      },
-      items: [
-        {
-          type: String,
-          required: true,
-        },
-      ],
-    },
-  ],
 
 }, {
   timestamps: true,
