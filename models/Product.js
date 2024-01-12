@@ -54,14 +54,12 @@ const ProductSchema = new Schema({
   attributes: [
     [
       {
-        name: {
+        value1: {
           type: String,
         },
-        values: [
-          {
-            type: String,
-          },
-        ],
+        value2: {
+          type: String,
+        },
         stock: {
           type: String, // or Number, depending on your requirements
         },
