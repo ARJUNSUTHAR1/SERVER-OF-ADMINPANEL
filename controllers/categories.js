@@ -9,11 +9,49 @@ const router = express.Router();
 router.post(
     "/create-category", async (req, res, next) => {
         try {
-            // All the variables for categorys now we can customize
+            const { name } = req.body;
 
+            // Check if a category with the same name already exists
+            const existingCategory = await Category.findOne({ name });
+        
+            if (existingCategory) {
+              return res.status(400).json({
+                success: false,
+                message: "Category with this name already exists.",
+              });
+            }
+        
+            // If the name is unique, create the new category
+            const categoryDoc = await Category.create(req.body);
+        
+            res.status(201).json({
+                message: "Create Successfully",
+                success: true,
+                categoryDoc,
+            });
+        } catch (error) {
+            return res.status(404).json({
+                success: false,
+                error: error.message
+            });
+        }
+    })
+router.post(
+    "/check-category-name", async (req, res, next) => {
+        try {
+            const { name } = req.query.name;
 
-            const categoryDoc = await Category.create(req.body)
-
+            // Check if a category with the same name already exists
+            const existingCategory = await Category.findOne({ name });
+        
+            if (existingCategory) {
+              return res.status(400).json({
+                success: false,
+                message: "Category with this name already exists.",
+              });
+            }
+        
+        
             res.status(201).json({
                 message: "Create Successfully",
                 success: true,
@@ -27,12 +65,15 @@ router.post(
         }
     })
 
+
+
+
 // get all categorys of a shop
 router.get(
     "/get-all-category",
     async (req, res, next) => {
         try {
-            const category = await Category.find({}).populate('parentCategory');
+            const category = await Category.find({}).populate('parentCategory').sort({createdAt: -1});
             res.status(201).json({
                 success: true,
                 category
@@ -79,6 +120,9 @@ router.put(
         try {
             const categoryId = req.params.id;
 
+            console.log("------------------" , req.body);
+
+
             const category = await Category.findByIdAndUpdate(categoryId, req.body, { new: true });
 
             if (!category) {
@@ -94,6 +138,7 @@ router.put(
                 category,
             });
         } catch (error) {
+            console.error(error)
             return res.status(500).json({
                 success: false,
                 error: "Internal Server Error",
