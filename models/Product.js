@@ -81,6 +81,25 @@ const ProductSchema = new Schema({
       },
     },
   ],
+  shipping: {
+    dimensions: {
+      length: {
+        type: String, // or Number, depending on your requirements
+      },
+      width: {
+        type: String, // or Number, depending on your requirements
+      },
+      height: {
+        type: String, // or Number, depending on your requirements
+      },
+    },
+    shippingClass: {
+      type: [String], // assuming it's an array of strings
+    },
+    weight: {
+      type: String, // or Number, depending on your requirements
+    },
+  },
 }, {
   timestamps: true,
 });
