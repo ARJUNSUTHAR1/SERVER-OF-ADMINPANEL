@@ -10,7 +10,12 @@ import attributesRoute from './controllers/attributesRoute.js'; // use import fo
 import parentCategory from './controllers/parentCategory.js'; // use import for ESM
 import layoutimg from './controllers/layoutimg.js'; // use import for ESM
 import slidercom from './controllers/slidercom.js'; // use import for ESM
+<<<<<<< HEAD
 import multitabs from './controllers/multitabs.js'; // use import for ESM
+=======
+import bannerRoute from './controllers/bannerRoute.js'; // use import for ESM
+import CardRoute from './controllers/cardRoute.js'; // use import for ESM
+>>>>>>> e5069e7fea88220a81cb94877b8d7cc26573be67
 
 const app = express();
 
@@ -26,6 +31,11 @@ app.use('/api/highlight', highlights);
 app.use('/api/parentCategory', parentCategory);
 app.use('/api/layoutimg', layoutimg);
 app.use('/api/slidercom', slidercom);
+<<<<<<< HEAD
 app.use('/api/multitabs', multitabs);
+=======
+app.use('/api/banner', bannerRoute);
+app.use('/api/card', CardRoute);
+>>>>>>> e5069e7fea88220a81cb94877b8d7cc26573be67
 
 export default app;
