@@ -11,6 +11,7 @@ import parentCategory from './controllers/parentCategory.js'; // use import for 
 import layoutimg from './controllers/layoutimg.js'; // use import for ESM
 import slidercom from './controllers/slidercom.js'; // use import for ESM
 import bannerRoute from './controllers/bannerRoute.js'; // use import for ESM
+import CardRoute from './controllers/cardRoute.js'; // use import for ESM
 
 const app = express();
 
@@ -27,5 +28,6 @@ app.use('/api/parentCategory', parentCategory);
 app.use('/api/layoutimg', layoutimg);
 app.use('/api/slidercom', slidercom);
 app.use('/api/banner', bannerRoute);
+app.use('/api/card', CardRoute);
 
 export default app;
