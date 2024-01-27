@@ -10,6 +10,7 @@ import attributesRoute from './controllers/attributesRoute.js'; // use import fo
 import parentCategory from './controllers/parentCategory.js'; // use import for ESM
 import layoutimg from './controllers/layoutimg.js'; // use import for ESM
 import slidercom from './controllers/slidercom.js'; // use import for ESM
+import multitabs from './controllers/multitabs.js'; // use import for ESM
 
 const app = express();
 
@@ -25,5 +26,6 @@ app.use('/api/highlight', highlights);
 app.use('/api/parentCategory', parentCategory);
 app.use('/api/layoutimg', layoutimg);
 app.use('/api/slidercom', slidercom);
+app.use('/api/multitabs', multitabs);
 
 export default app;

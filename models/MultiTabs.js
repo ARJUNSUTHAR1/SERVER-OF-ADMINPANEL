@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 
 const { model, models, Schema } = mongoose;
 
-const SliderCom = new Schema({
+const MultiTabs = new Schema({
     heading: { type: String, required: true },
     Images: [
         {
@@ -32,6 +32,6 @@ const SliderCom = new Schema({
     timestamps: true,
 });
 
-const SliderComp = models?.SliderComp || model('SliderComp', SliderCom);
+const MultiTab = models?.MultiTabs || model('MultiTabs', MultiTabs);
 
-export default SliderComp;
+export default MultiTab;
