@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const { model, models, Schema } = mongoose;
-
+ 
 const TagSchema = new Schema({
   name: { type: String, required: true },
   createdAt: {
