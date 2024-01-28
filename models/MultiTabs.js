@@ -4,12 +4,14 @@ import mongoose from "mongoose";
 const { model, models, Schema } = mongoose;
 
 const MultiTabs = new Schema({
-    heading: { type: String, required: true },
-    Images: [
+    name: { type: String, required: true },
+    Tabs: [
         {
-            title: { type: String, required: true },
-            src: { type: String, required: true },
-            href: { type: String, required: true },
+            tabname: { type: String, required: true },
+            component: {
+                type: Schema.Types.ObjectId,
+                ref: "SliderComp",
+            },
             active: {
                 type: Boolean,
                 default: false,
@@ -19,10 +21,6 @@ const MultiTabs = new Schema({
     visible: {
         type: Boolean,
         default: false,
-    },
-    viewall: {
-        type: String,
-        default: "/",
     },
     createdAt: {
         type: Date,

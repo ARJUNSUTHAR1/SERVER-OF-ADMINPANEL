@@ -9,7 +9,7 @@ const SliderCom = new Schema({
         {
             title: { type: String, required: true },
             src: { type: String, required: true },
-            href: { type: String, required: true },
+            href: { type: Schema.Types.ObjectId, required: true },
             active: {
                 type: Boolean,
                 default: false,
