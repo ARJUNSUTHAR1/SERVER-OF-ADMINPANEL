@@ -13,6 +13,7 @@ import slidercom from './controllers/slidercom.js'; // use import for ESM
 import multitabs from './controllers/multitabs.js'; // use import for ESM
 import bannerRoute from './controllers/bannerRoute.js'; // use import for ESM
 import CardRoute from './controllers/cardRoute.js'; // use import for ESM
+import FrontLayout from './controllers/frontlayout.js'; // use import for ESM
 
 
 const app = express();
@@ -32,6 +33,7 @@ app.use('/api/slidercom', slidercom);
 app.use('/api/multitabs', multitabs);
 app.use('/api/banner', bannerRoute);
 app.use('/api/card', CardRoute);
+app.use('/api/frontlayout', FrontLayout);
 
 
 export default app;
