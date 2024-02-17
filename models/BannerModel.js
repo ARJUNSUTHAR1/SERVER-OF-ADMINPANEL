@@ -3,6 +3,16 @@ import mongoose from "mongoose";
 const { model, models, Schema } = mongoose;
 
 const BannerSchema = new Schema({
+    name: {
+        type: String,
+        required: true
+    },
+
+    bannerLinkCategoryOrProduct:{
+        type : String,
+        required : true
+    },
+
     bannerImageLink: {
         type: String,
         required: true
@@ -13,7 +23,6 @@ const BannerSchema = new Schema({
         required: true,
         default: true
     },
-
 
     overlayImages: [
         {

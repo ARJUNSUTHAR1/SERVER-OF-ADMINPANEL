@@ -4,33 +4,38 @@ import BannerModel from "../models/BannerModel.js";
 
 const router = express.Router();
 // create tag
-router.post(
-    "/create-banner", async (req, res, next) => {
-        try {
-            const { bannerImageLink, isVisible, overlayImages } = req.body;
 
-            // Validate the request data (add more validation if necessary)
-            if (!bannerImageLink || typeof isVisible !== 'boolean' || !Array.isArray(overlayImages)) {
-                return res.status(400).json({ success: false, message: "Invalid request data" });
-            }
+// Create banner
+router.post("/create-banner", async (req, res) => {
+    try {
+        const { name, bannerLinkCategoryOrProduct, bannerImageLink, isVisible, overlayImages } = req.body;
 
-            // Create a new banner using the Mongoose model
-            const newBanner = new BannerModel({
-                bannerImageLink,
-                isVisible,
-                overlayImages,
-            });
-
-            // Save the banner to the database
-            await newBanner.save();
-
-            // Respond with success message
-            res.status(201).json({ success: true, message: 'Banner created successfully' });
-        } catch (error) {
-            console.error(error);
-            res.status(500).json({ error: 'Internal Server Error' });
+        // Validate the request data
+        if (!name || !bannerLinkCategoryOrProduct || !bannerImageLink || typeof isVisible !== 'boolean' || !Array.isArray(overlayImages)) {
+            return res.status(400).json({ success: false, message: "Invalid request data" });
         }
-    })
+
+        // Create a new banner using the Mongoose model
+        const newBanner = new BannerModel({
+            name,
+            bannerLinkCategoryOrProduct,
+            bannerImageLink,
+            isVisible,
+            overlayImages,
+        });
+
+        // Save the banner to the database
+        await newBanner.save();
+
+        // Respond with success message
+        res.status(201).json({ success: true, message: 'Banner created successfully' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+
 
 router.get("/get-all-banners", async (req, res) => {
     try {
@@ -61,16 +66,16 @@ router.get("/get-banner/:id", async (req, res) => {
 // Update banner by ID
 router.put("/update-banner/:id", async (req, res) => {
     try {
-        const { bannerImageLink, isVisible, overlayImages } = req.body;
+        const { name, bannerLinkCategoryOrProduct, bannerImageLink, isVisible, overlayImages } = req.body;
 
         // Validate the request data
-        if (!bannerImageLink || typeof isVisible !== 'boolean' || !Array.isArray(overlayImages)) {
+        if (!name || !bannerLinkCategoryOrProduct || !bannerImageLink || typeof isVisible !== 'boolean' || !Array.isArray(overlayImages)) {
             return res.status(400).json({ success: false, message: "Invalid request data" });
         }
 
         const updatedBanner = await BannerModel.findByIdAndUpdate(
             req.params.id,
-            { bannerImageLink, isVisible, overlayImages },
+            { name, bannerLinkCategoryOrProduct, bannerImageLink, isVisible, overlayImages },
             { new: true }
         );
 
@@ -84,6 +89,7 @@ router.put("/update-banner/:id", async (req, res) => {
         res.status(500).json({ error: 'Internal Server Error' });
     }
 });
+
 
 router.delete("/delete-banner/:id", async (req, res) => {
     try {
