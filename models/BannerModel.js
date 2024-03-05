@@ -8,9 +8,9 @@ const BannerSchema = new Schema({
         required: true
     },
 
-    bannerLinkCategoryOrProduct:{
-        type : String,
-        required : true
+    bannerLinkCategoryOrProduct: {
+        type: String,
+        required: true
     },
 
     bannerImageLink: {
@@ -33,6 +33,10 @@ const BannerSchema = new Schema({
             isVisible: {
                 type: Boolean,
                 default: true
+            },
+            linkTo: {
+                type: "String",
+                required: true,
             }
         }
     ],
