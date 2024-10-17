@@ -11,7 +11,7 @@ router.route('/login').post(login);
 router.route('/get-current-user').get(authMiddleware, getCurrentUser);
 router.route('/uploadprofileimage').post( upload.single('profile_image'), uploadProfileImage);
 
-router.route('/updateuser/:id').put( updateUser);
+router.route('/updateuser/:id').put( updateUser); 
 
 
 export default router;
