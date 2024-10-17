@@ -5,7 +5,7 @@ const { model, models, Schema } = mongoose;
 const CardSchema = new Schema({
     mainHeading: {
         type: String,
-        required: true
+        required: true 
     },
 
     isVisible: {
