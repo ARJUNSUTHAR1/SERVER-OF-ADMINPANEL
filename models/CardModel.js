@@ -11,7 +11,7 @@ const CardSchema = new Schema({
     isVisible: {
         type: Boolean,
         required: true,
-        default: true
+        default: true 
     },
 
     productsData: [
