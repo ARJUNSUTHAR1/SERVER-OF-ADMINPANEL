@@ -1,6 +1,6 @@
 import express from "express";
 import Category from "../models/Category.js"
-import User from "../models/Usermodel.js";
+import User from "../models/userModel.js";
 import mongoose from "mongoose";
 
 
@@ -9,13 +9,48 @@ const router = express.Router();
 router.post(
     "/create-category", async (req, res, next) => {
         try {
-            // All the variables for categorys now we can customize
-            // create category
             const { name } = req.body;
 
-            const categoryDoc = await Category.create({
-                name
-            })
+            // Check if a category with the same name already exists
+            const existingCategory = await Category.findOne({ name });
+
+            if (existingCategory) {
+                return res.status(400).json({
+                    success: false,
+                    message: "Category with this name already exists.",
+                });
+            }
+
+            // If the name is unique, create the new category
+            const categoryDoc = await Category.create(req.body);
+
+            res.status(201).json({
+                message: "Create Successfully",
+                success: true,
+                categoryDoc,
+            });
+        } catch (error) {
+            return res.status(404).json({
+                success: false,
+                error: error.message
+            });
+        }
+    })
+router.post(
+    "/check-category-name", async (req, res, next) => {
+        try {
+            const { name } = req.query.name;
+
+            // Check if a category with the same name already exists
+            const existingCategory = await Category.findOne({ name });
+
+            if (existingCategory) {
+                return res.status(400).json({
+                    success: false,
+                    message: "Category with this name already exists.",
+                });
+            }
+
 
             res.status(201).json({
                 message: "Create Successfully",
@@ -30,12 +65,53 @@ router.post(
         }
     })
 
+
+// get all categories of a shop
+router.get(
+    "/get-front-category",
+    async (req, res, next) => {
+        try {
+            const categories = await Category.find({}).sort({ createdAt: -1 });
+
+            const populateParentCategories = async (category) => {
+                if (category.parentCategory) {
+                    const parentCategory = await Category.findById(category.parentCategory);
+                    await populateParentCategories(parentCategory);
+                    category.parentCategory = parentCategory;
+                }
+            };
+
+            // Populate parent categories recursively for each category
+            for (const category of categories) {
+                await populateParentCategories(category);
+            }
+
+            res.status(201).json({
+                success: true,
+                categories
+            });
+        } catch (error) {
+            return res.status(400).json({
+                success: false,
+                error: error.message
+            });
+        }
+    }
+);
+
+
+
 // get all categorys of a shop
 router.get(
     "/get-all-category",
     async (req, res, next) => {
         try {
-            const category = await Category.find({});
+            const category = await Category.find({}).populate({
+                path: 'parentCategory', populate: {
+                    path: "parentCategory",
+                    model: "TotalCategory"
+                }
+            }).sort({ createdAt: -1 });
             res.status(201).json({
                 success: true,
                 category
@@ -81,21 +157,18 @@ router.put(
     async (req, res, next) => {
         try {
             const categoryId = req.params.id;
-            
-            const { name } = req.body;
 
-            const category = await Category.findById(categoryId);
+            console.log("------------------", req.body);
+
+
+            const category = await Category.findByIdAndUpdate(categoryId, req.body, { new: true });
 
             if (!category) {
-                return res.status(400).json({
+                return res.status(404).json({
                     success: false,
-                    error: "Category is not found with this id",
+                    error: "Category not found",
                 });
             }
-
-            // Update category
-            category.name = name;
-            await category.save();
 
             res.status(200).json({
                 success: true,
@@ -103,13 +176,15 @@ router.put(
                 category,
             });
         } catch (error) {
-            return res.status(400).json({
+            console.error(error)
+            return res.status(500).json({
                 success: false,
-                error: error.message,
+                error: "Internal Server Error",
             });
         }
     }
 );
+
 
 
 

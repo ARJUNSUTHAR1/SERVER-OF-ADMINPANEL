@@ -1,6 +1,5 @@
-import Product from "../models/product.js";
+import Product from "../models/Product.js";
 import express from 'express';
-import User from "../models/Usermodel.js";
 import upload from "../middlewares/multer.js";
 import cloudinary from "../configs/cloudinaryConfig.js";
 
@@ -12,16 +11,18 @@ router.post(
     "/create-product", async (req, res, next) => {
         try {
             const newProduct = await Product.create(req.body);
-
+            console.log(newProduct,"back")
             res.status(200).send({
                 success: true,
                 message: "Product has been added successfully",
+                newProduct
             });
 
         } catch (error) {
             return res.status(404).json({
                 success: false,
                 error: error.message,
+                
             });
         }
     })
